@@ -1,28 +1,144 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Free Location Tracker</title>
+<title>Expense Tracker Pro</title>
 
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<style>
+body {
+    font-family: Arial;
+    text-align: center;
+    background: #f4f4f4;
+}
 
-  <style>
-    #map { height: 400px; }
-  </style>
+.container {
+    max-width: 400px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+input, select, button {
+    width: 90%;
+    padding: 8px;
+    margin: 5px;
+}
+
+li {
+    list-style: none;
+    background: #eee;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.dark {
+    background: #222;
+    color: white;
+}
+</style>
 </head>
 
 <body>
 
-<h2>My Free Location Tracker</h2>
+<div class="container">
+<h2>Expense Tracker</h2>
 
-<button onclick="startTracking()">Start</button>
-<button onclick="stopTracking()">Stop</button>
+<input type="text" id="desc" placeholder="Description">
+<input type="number" id="amount" placeholder="Amount">
 
-<div id="map"></div>
+<select id="category">
+<option>Food</option>
+<option>Travel</option>
+<option>Shopping</option>
+<option>Other</option>
+</select>
 
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="app.js"></script>
+<input type="date" id="date">
+
+<button onclick="addExpense()">Add</button>
+<button onclick="toggleDark()">🌙 Dark Mode</button>
+
+<h3>Total: ₹<span id="total">0</span></h3>
+
+<select onchange="filterCategory(this.value)">
+<option value="all">All</option>
+<option>Food</option>
+<option>Travel</option>
+<option>Shopping</option>
+<option>Other</option>
+</select>
+
+<ul id="list"></ul>
+</div>
+
+<script>
+let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+
+function addExpense() {
+    let desc = descInput.value;
+    let amount = amountInput.value;
+    let category = categoryInput.value;
+    let date = dateInput.value;
+
+    if(desc === "" || amount === "") {
+        alert("Fill all fields");
+        return;
+    }
+
+    expenses.push({desc, amount: Number(amount), category, date});
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+
+    showExpenses(expenses);
+}
+
+function showExpenses(data) {
+    let list = document.getElementById("list");
+    let total = 0;
+    list.innerHTML = "";
+
+    data.forEach((item, index) => {
+        total += item.amount;
+
+        let li = document.createElement("li");
+        li.innerHTML = `
+        ${item.desc} - ₹${item.amount} <br>
+        ${item.category} | ${item.date}
+        <button onclick="deleteExpense(${index})">X</button>
+        `;
+        list.appendChild(li);
+    });
+
+    document.getElementById("total").innerText = total;
+}
+
+function deleteExpense(index) {
+    expenses.splice(index, 1);
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+    showExpenses(expenses);
+}
+
+function filterCategory(cat) {
+    if(cat === "all") {
+        showExpenses(expenses);
+    } else {
+        let filtered = expenses.filter(e => e.category === cat);
+        showExpenses(filtered);
+    }
+}
+
+function toggleDark() {
+    document.body.classList.toggle("dark");
+}
+
+// shortcut variables
+let descInput = document.getElementById("desc");
+let amountInput = document.getElementById("amount");
+let categoryInput = document.getElementById("category");
+let dateInput = document.getElementById("date");
+
+showExpenses(expenses);
+</script>
 
 </body>
 </html>
