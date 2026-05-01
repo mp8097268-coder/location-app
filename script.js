@@ -1,9 +1,9 @@
 let Chart;
 let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
 const firebaseConfig = {
-  apiKey: "YOUR_KEY",
-  authDomain: "YOUR_DOMAIN",
-  projectId: "YOUR_ID"
+  apiKey: "AIzaSyAZzJDB1OMxH2RF13m1FdqHEQ_k1uNieNw",
+  authDomain: "expense-tractor-app.firebaseapp.com",
+  projectId: "expense-tractor-app"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -31,6 +31,17 @@ function logout() {
 }
 // ADD
 function addExpense() {
+list.innerHTML += `
+  <li class="flex justify-between items-center bg-gray-100 p-2 rounded">
+    <span>
+      📅 ${exp.date} | ${exp.title} | ₹${exp.amount}
+    </span>
+    <div>
+      <button onclick="editExpense(${index})">✏️</button>
+      <button onclick="deleteExpense(${index})">❌</button>
+    </div>
+  </li>
+`;
   let title = document.getElementById("title").value.trim();
   let amount = document.getElementById("amount").value.trim();
   let date = document.getElementById("date").value;

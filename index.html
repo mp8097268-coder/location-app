@@ -2,54 +2,79 @@
 <html>
 <head>
   <title>Expense Tracker</title>
-  <link rel="stylesheet" href="style.css">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Chart -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 </head>
 
-<body>
-<h3>Login System 🔐</h3>
+<body class="bg-gray-100 p-5">
 
-<input type="email" id="email" placeholder="Email">
-<input type="password" id="password" placeholder="Password">
+<h2 class="text-3xl font-bold text-center mb-5">Expense Tracker 💰</h2>
 
-<button onclick="signup()">Signup</button>
-<button onclick="login()">Login</button>
+<div class="max-w-md mx-auto bg-white p-5 rounded-xl shadow-lg">
 
-<hr>
-<canvas id="myChart"></canvas>
+  <!-- 🔐 LOGIN -->
+  <h3 class="font-bold mb-2">Login System 🔐</h3>
 
-<h2>Expense Tracker 💰</h2>
+  <input id="email" type="email" class="border p-2 w-full mb-2 rounded" placeholder="Email">
+  <input id="password" type="password" class="border p-2 w-full mb-2 rounded" placeholder="Password">
 
-<!-- Inputs -->
-<input type="text" id="title" placeholder="Kis cheez ka expense (e.g. Food)">
-<input type="number" id="amount" placeholder="Amount">
-<input type="date" id="date">
+  <div class="flex gap-2 mb-3">
+    <button onclick="signup()" class="bg-green-500 text-white p-2 rounded w-full">Signup</button>
+    <button onclick="login()" class="bg-blue-500 text-white p-2 rounded w-full">Login</button>
+  </div>
 
-<button type="button" onclick="addExpense()">Add</button>
-<button onclick="logout()">Logout</button>
+  <button onclick="logout()" class="bg-red-500 text-white w-full p-2 rounded mb-4">Logout</button>
 
-<hr>
+  <hr class="mb-4">
 
-<!-- Filter -->
-<input type="date" id="filterDate">
-<button onclick="filterByDate()">Search by Date</button>
+  <!-- ➕ ADD -->
+  <input id="title" class="border p-2 w-full mb-2 rounded" placeholder="Expense name">
+  <input id="amount" type="number" class="border p-2 w-full mb-2 rounded" placeholder="Amount">
+  <input id="date" type="date" class="border p-2 w-full mb-2 rounded">
 
-<br><br>
+  <button onclick="addExpense()" class="bg-blue-500 text-white w-full p-2 rounded mb-3">
+    Add Expense
+  </button>
 
-<!-- Filter by range -->
-<input type="date" id="fromDate">
-<input type="date" id="toDate">
-<button onclick="filterByRange()">Filter Range</button>
+  <!-- 🔍 FILTER -->
+  <input type="date" id="filterDate" class="border p-2 w-full mb-2 rounded">
+  <button onclick="filterByDate()" class="bg-green-500 text-white w-full p-2 rounded mb-2">
+    Filter by Date
+  </button>
 
-<br><br>
+  <div class="flex gap-2 mb-2">
+    <input type="date" id="fromDate" class="border p-2 w-full rounded">
+    <input type="date" id="toDate" class="border p-2 w-full rounded">
+  </div>
 
-<button onclick="resetData()">Show All</button>
+  <button onclick="filterByRange()" class="bg-purple-500 text-white w-full p-2 rounded mb-2">
+    Filter Range
+  </button>
 
-<h3>Total: ₹<span id="total">0</span></h3>
+  <button onclick="resetData()" class="bg-gray-500 text-white w-full p-2 rounded mb-3">
+    Show All
+  </button>
 
-<ul id="list"></ul>
+  <!-- 💰 TOTAL -->
+  <h3 class="font-bold text-lg text-center">
+    Total: ₹<span id="total">0</span>
+  </h3>
+
+  <!-- 📋 LIST -->
+  <ul id="list" class="mt-4 space-y-2"></ul>
+
+  <!-- 📊 CHART -->
+  <canvas id="myChart" class="mt-5"></canvas>
+
+</div>
 
 <script src="script.js"></script>
 
